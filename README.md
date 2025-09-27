@@ -10,7 +10,7 @@ This project is a MERN stack application that utilizes Docker for containerizati
 1. Clone the repository:
    ```
    git clone <repository-url>
-   cd mern-docker-app
+   cd Glasses-Recipie-Book-App
    ```
 
 
