@@ -1,0 +1,12 @@
+# node modules
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# environment variables
+.env
+server/.env
+client/.env
+
+# docker
+**/node_modules
