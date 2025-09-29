@@ -13,16 +13,15 @@ async function register(req, res) {
             return res.status(400).json({ message: 'Name, email, and password are required.' });
         }
 
-        const alreadyExists = await User.findOne({ where: { email } });
+        const alreadyExists = await User.findOne({ email });
         if (alreadyExists) {
             return res.status(409).json({ message: 'User already exists.' });
         }
 
         const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
         const newUser = await User.create({ name, email, password: hashedPassword });
-        const token = signToken({ id: newUser.id, role: newUser.role });
-
-        return res.status(201).json({ user: { id: newUser.id, email: newUser.email }, token });
+        const token = signToken({ id: newUser._id, email: newUser.email });
+        return res.status(201).json({ user: { id: newUser._id, email: newUser.email }, token });
 
     } catch (error) {
         console.error('Error during registration:', error);
@@ -39,7 +38,7 @@ async function login(req, res) {
             return res.status(400).json({ message: 'Email and password are required.' });
         }
 
-        const user = await User.findOne({ where: { email } });
+        const user = await User.findOne({ email });
         if (!user) {
             return res.status(401).json({ message: 'Invalid email or password.' });
         }
@@ -49,8 +48,8 @@ async function login(req, res) {
             return res.status(401).json({ message: 'Invalid email or password.' });
         }
 
-        const token = signToken({ id: user.id, email: user.email });
-        return res.status(200).json({ user: { id: user.id, email: user.email }, token });
+        const token = signToken({ id: user._id, email: user.email });
+        return res.status(200).json({ user: { id: user._id, email: user.email }, token });
 
     } catch (error) {
         console.error('Error during login:', error);

@@ -29,7 +29,7 @@ router.post('/example', exampleController.postExample);
 router.get('/profile', authenticate, async (req, res) => {
     try {
         const userId = req.user.id;
-        const recipes = await Recipe.find({ author: { userId } }).lean();
+        const recipes = await Recipe.find({ author: userId }).lean();
         res.json({ user: req.user, recipes });
     } catch (error) {
         console.error('Error fetching user profile:', error);
