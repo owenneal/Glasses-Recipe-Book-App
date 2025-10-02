@@ -24,4 +24,30 @@ const userSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 const User = mongoose.model('User', userSchema);
-module.exports = { User };
+
+
+const recipeSchema = new mongoose.Schema({
+    title: {
+        type: String,
+        required: true
+    },
+    ingredients: {
+        type: [String],
+        default: [],
+        required: true
+    },
+    instructions: {
+        type: [String],
+        default: [],
+        required: true
+    },
+    author: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    }
+}, { timestamps: true });
+
+const Recipe = mongoose.model('Recipe', recipeSchema);
+
+module.exports = { User, Recipe };
