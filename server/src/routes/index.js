@@ -11,6 +11,7 @@ const router = express.Router();
 // import  any controllers
 const exampleController = require('../controllers/index');
 const authController = require('../controllers/auth-controller');
+const recipeController = require('../controllers/recipe-controller');
 const authenticate = require('../middleware/auth');
 const { Recipe } = require('../models');
 
@@ -23,6 +24,22 @@ router.post('/auth/login', authController.login);
 // define routes that are sent from the client and handled by the controllers
 router.get('/example', exampleController.getExample);
 router.post('/example', exampleController.postExample);
+
+
+
+
+// search/ public recipe routes
+router.get('/recipes/search', recipeController.searchRecipes);
+router.get('/recipes/public', recipeController.getPublicRecipes);
+
+// recipe crud routing
+router.post('/recipes', authenticate, recipeController.createRecipe);
+router.get('/recipes/:id', recipeController.getRecipeById);
+router.put('/recipes/:id', authenticate, recipeController.updateRecipe);
+router.delete('/recipes/:id', authenticate, recipeController.deleteRecipe);
+
+
+
 
 
 // protected route example
