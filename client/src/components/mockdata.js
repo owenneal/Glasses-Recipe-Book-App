@@ -1,0 +1,86 @@
+export const mockData = [
+  {
+    _id: "1",
+    title: "Classic Chocolate Chip Cookies",
+    ingredients: [
+      "2 1/4 cups all-purpose flour",
+      "1 tsp baking soda",
+      "1 tsp salt",
+      "1 cup butter, softened",
+      "3/4 cup granulated sugar",
+      "3/4 cup packed brown sugar",
+      "2 large eggs",
+      "2 tsp vanilla extract",
+      "2 cups chocolate chips"
+    ],
+    instructions: [
+      "Preheat oven to 375°F (190°C).",
+      "In a medium bowl, whisk together flour, baking soda, and salt.",
+      "In a large bowl, cream together butter and both sugars until light and fluffy.",
+      "Beat in eggs one at a time, then add vanilla extract.",
+      "Gradually mix in the flour mixture until just combined.",
+      "Stir in chocolate chips.",
+      "Drop rounded tablespoons of dough onto ungreased baking sheets.",
+      "Bake for 9-11 minutes or until golden brown.",
+      "Cool on baking sheet for 2 minutes before transferring to wire rack."
+    ]
+  },
+  {
+    _id: "2",
+    title: "Creamy Mushroom Risotto",
+    ingredients: [
+      "1 1/2 cups Arborio rice",
+      "4-5 cups warm chicken or vegetable broth",
+      "1 lb mixed mushrooms, sliced",
+      "1 medium onion, finely chopped",
+      "3 cloves garlic, minced",
+      "1/2 cup dry white wine",
+      "1/2 cup grated Parmesan cheese",
+      "3 tbsp butter",
+      "2 tbsp olive oil",
+      "Salt and pepper to taste",
+      "Fresh parsley for garnish"
+    ],
+    instructions: [
+      "Heat olive oil in a large pan and sauté mushrooms until golden. Set aside.",
+      "In the same pan, melt 1 tbsp butter and cook onion until translucent.",
+      "Add garlic and cook for 1 minute.",
+      "Add rice and stir for 2 minutes until lightly toasted.",
+      "Pour in wine and stir until absorbed.",
+      "Add warm broth one ladle at a time, stirring constantly until absorbed.",
+      "Continue for 18-20 minutes until rice is creamy and tender.",
+      "Stir in mushrooms, remaining butter, and Parmesan cheese.",
+      "Season with salt and pepper, garnish with parsley and serve immediately."
+    ]
+  },
+  {
+    _id: "3",
+    title: "Mediterranean Quinoa Salad",
+    ingredients: [
+      "1 cup quinoa, rinsed",
+      "2 cups water or vegetable broth",
+      "1 cucumber, diced",
+      "2 cups cherry tomatoes, halved",
+      "1/2 red onion, thinly sliced",
+      "1/2 cup Kalamata olives, pitted",
+      "1/2 cup crumbled feta cheese",
+      "1/4 cup fresh mint leaves",
+      "1/4 cup fresh parsley",
+      "3 tbsp olive oil",
+      "2 tbsp lemon juice",
+      "1 tsp dried oregano",
+      "Salt and pepper to taste"
+    ],
+    instructions: [
+      "Bring quinoa and water to a boil in a medium saucepan.",
+      "Reduce heat, cover, and simmer for 15 minutes until liquid is absorbed.",
+      "Remove from heat and let stand 5 minutes, then fluff with a fork.",
+      "Let quinoa cool to room temperature.",
+      "In a large bowl, combine cooled quinoa, cucumber, tomatoes, and red onion.",
+      "Add olives, feta cheese, mint, and parsley.",
+      "In a small bowl, whisk together olive oil, lemon juice, oregano, salt, and pepper.",
+      "Pour dressing over salad and toss gently to combine.",
+      "Refrigerate for at least 30 minutes before serving to allow flavors to meld."
+    ]
+  }
+];

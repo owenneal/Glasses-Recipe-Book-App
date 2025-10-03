@@ -4,13 +4,33 @@
 
 
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { fetchExampleData } from '../services/api';
+
 
 const Example = () => {
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        fetchExampleData()
+            .then((result) => {
+                setData(result);
+                setLoading(false);
+            })
+            .catch((err) => {
+                setError('Failed to fetch data');
+                setLoading(false);
+            });
+    }, []);
+
     return (
         <div>
-            <h1>This is an example component</h1>
-            <p>Try changing this while the app is running</p>
+            <h1>Example Data from API</h1>
+            {loading && <p>Loading...</p>}
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {data && <pre>{typeof data === 'string' ? data : JSON.stringify(data, null, 2)}</pre>}
         </div>
     );
 };

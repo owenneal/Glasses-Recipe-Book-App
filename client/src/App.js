@@ -5,13 +5,12 @@
 
 
 import React from 'react';
-import Example from './components/Example';
+import Main from './components/Main';
 
 function App() {
   return (
     <div className="App">
-      <h1>Welcome to the MERN Docker App</h1>
-      <Example />
+      <Main />
     </div>
   );
 }
