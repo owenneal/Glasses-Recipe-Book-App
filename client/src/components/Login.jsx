@@ -13,7 +13,7 @@ export default function Login({ onLogin }) {
             const res = await api.post('/auth/login', { email, password });
             onLogin(res.data.token, res.data.user);
         } catch (err) {
-            setError(err.response?.data?.message || 'Login failed');
+            setError(err.response?.data?.message);
         }
     };
 

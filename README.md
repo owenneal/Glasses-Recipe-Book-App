@@ -4,9 +4,7 @@ This project is a MERN stack application that utilizes Docker for containerizati
 
 
 ### Setup
-
-
-
+ 
 1. Clone the repository:
    ```
    git clone <repository-url>

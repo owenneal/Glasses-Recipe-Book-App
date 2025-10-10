@@ -4,13 +4,39 @@
 
 
 
-import React from 'react';
+import React, { useState } from 'react';
 import Main from './components/Main';
+import Landing from './components/Landing';
 
 function App() {
+  const [token, setToken] = useState(localStorage.getItem('token') || '');
+  const [user, setUser] = useState(null);
+
+
+  const handleAuth = (jwt, userObj) => {
+    setToken(jwt);
+    setUser(userObj);
+    localStorage.setItem('token', jwt);
+  };
+
+  const handleLogout = () => {
+    setToken('');
+    setUser(null);
+    localStorage.removeItem('token');
+  };
+
   return (
     <div className="App">
-      <Main />
+      {!token
+        ? <Landing onAuth={handleAuth} />
+        : (
+          <>
+            <h1>Welcome, {user ? user.name : 'User'}!</h1>
+            <button onClick={handleLogout} style={{position:'absolute',top:10,right:10}}>Logout</button>
+            <Main />
+          </>
+        )
+      }
     </div>
   );
 }
