@@ -33,7 +33,7 @@ const corsOptions = {
   optionsSuccessStatus: 204,
 };
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
+//app.options('*', cors(corsOptions)); // this line doesnt seem to work it looks like wrong syntax but it looks like it should be right
 
 
 

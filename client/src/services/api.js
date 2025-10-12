@@ -23,16 +23,20 @@ const api = axios.create({
 });
 
 
-// example API function
-export const fetchExampleData = async () => {
-    try {
-        const response = await api.get('/example');
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching example data:', error);
-        throw error;
+api.interceptors.request.use(config => {
+    const token = localStorage.getItem('token');
+    if (token) {
+        config.headers['Authorization'] = `Bearer ${token}`;
     }
-};
+    return config;
+    }, error => {
+    return Promise.reject(error);
+});
+
+
+export const getMyRecipes = async () => {
+    const response = await api.get
+}
 
 export default api;
 
