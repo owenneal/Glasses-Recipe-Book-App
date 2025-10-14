@@ -8,6 +8,14 @@ const SALT_ROUNDS = 10;
 // register a new user
 async function register(req, res) {
     try {
+
+
+        if (!req.body) {
+            console.log('Request body is missing');
+            return res.status(400).json({ message: 'Request body is missing.' });
+        }
+
+
         const { name, email, password } = req.body;
         if (!name || !email || !password) {
             return res.status(400).json({ message: 'Name, email, and password are required.' });
