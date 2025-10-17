@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import "../styles.css";
 import RecipeInput from "./Input";
+import api from "../services/api";
 
 export default function Main({ user, onLogout }) {
   const [recipes, setRecipes] = useState([]);
@@ -10,9 +11,9 @@ export default function Main({ user, onLogout }) {
 
   // Load from backend instead of mockdata.js
   useEffect(() => {
-    fetch("http://localhost:5000/api/recipes")
+    api.get('/recipes/public')
       .then((res) => res.json())
-      .then((data) => setRecipes(data))
+      .then((data) => setRecipes(data.recipes))
       .catch((err) => console.error("Failed to load recipes", err));
   }, []);
 

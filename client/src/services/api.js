@@ -34,9 +34,61 @@ api.interceptors.request.use(config => {
 });
 
 
-export const getMyRecipes = async () => {
-    const response = await api.get
+// example API function
+export const fetchExampleData = async () => {
+    try {
+        const response = await api.get('/example');
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching example data:', error);
+        throw error;
+    }
+};
+
+
+
+export const getAllMyRecipes = async () => {
+    try {
+        const response = await api.get('/profile');
+        return response.data.recipes;
+    } catch (error) {
+        console.error('Error fetching all my recipes:', error);
+        throw error;
+    }
 }
+
+export const createRecipe = async (recipeData) => {
+    try {
+        const response = await api.post('/recipes', recipeData);
+        return response.data;
+    } catch (error) {
+        console.error('Error creating recipe:', error);
+        throw error;
+    }
+};
+
+
+export const updateRecipe = async (id, recipeData) => {
+    try {
+        const response = await api.put(`/recipes/${id}`, recipeData);
+        return response.data;
+    } catch (error) {
+        console.error('Error updating recipe:', error);
+        throw error;
+    }
+};
+
+
+
+export const deleteRecipe = async (id) => {
+    try {
+        const response = await api.delete(`/recipes/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error deleting recipe:', error);
+        throw error;
+    }
+};
 
 export default api;
 

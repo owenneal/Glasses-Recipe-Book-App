@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { createRecipe } from "../services/api";
+import api from "../services/api";
 
 export default function RecipeInput({ onAddRecipe }) {
   const [title, setTitle] = useState("");
@@ -9,28 +11,20 @@ export default function RecipeInput({ onAddRecipe }) {
     e.preventDefault();
 
     const newRecipe = {
-      id: Date.now(),
       title,
       ingredients: ingredients.split(",").map((ing) => ing.trim()),
-      steps: steps.split(".").map((step) => step.trim()).filter(Boolean),
+      instructions: steps.split(".").map((step) => step.trim()).filter(Boolean),
+      public: true,
     };
 
     try {
-      const res = await fetch("http://localhost:5000/api/recipes", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newRecipe),
-      });
+      const res = await createRecipe(newRecipe);
+      onAddRecipe(res);
+      
 
-      if (res.ok) {
-        onAddRecipe(newRecipe);
-      } else {
-        console.error("Failed to save recipe");
-      }
     } catch (err) {
       console.error("Error:", err);
     }
-
     setTitle("");
     setIngredients("");
     setSteps("");
