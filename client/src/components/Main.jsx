@@ -1,37 +1,41 @@
 import { useEffect, useState, useMemo } from "react";
-import { mockData } from "./mockdata.js";
-import "../styles.css"; 
+import "../styles.css";
+import RecipeInput from "./Input";
 
-// fetch function to import data from mockdata.json
-export async function fetchExampleData() {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(mockData), 500);
-  });
-}
-
-export default function Main() {
+export default function Main({ user, onLogout }) {
   const [recipes, setRecipes] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
+  const [showForm, setShowForm] = useState(false);
 
+  // Load from backend instead of mockdata.js
   useEffect(() => {
-    fetchExampleData().then((data) => setRecipes(data));
+    fetch("http://localhost:5000/api/recipes")
+      .then((res) => res.json())
+      .then((data) => setRecipes(data))
+      .catch((err) => console.error("Failed to load recipes", err));
   }, []);
 
-  // Filter recipes based on search term and selected filter
+  // Add new recipe to state
+  const addRecipe = (newRecipe) => {
+    setRecipes((prev) => [...prev, newRecipe]);
+  };
+
+  // Filtering logic
   const filteredRecipes = useMemo(() => {
     let filtered = recipes;
 
     if (searchTerm.trim()) {
       const searchLower = searchTerm.toLowerCase();
-      filtered = filtered.filter((recipe) =>
-        recipe.title.toLowerCase().includes(searchLower) ||
-        recipe.ingredients.some((ingredient) =>
-          ingredient.toLowerCase().includes(searchLower)
-        ) ||
-        recipe.instructions.some((instruction) =>
-          instruction.toLowerCase().includes(searchLower)
-        )
+      filtered = filtered.filter(
+        (recipe) =>
+          recipe.title.toLowerCase().includes(searchLower) ||
+          recipe.ingredients.some((ingredient) =>
+            ingredient.toLowerCase().includes(searchLower)
+          ) ||
+          recipe.instructions.some((instruction) =>
+            instruction.toLowerCase().includes(searchLower)
+          )
       );
     }
 
@@ -40,9 +44,17 @@ export default function Main() {
         const title = recipe.title.toLowerCase();
         switch (selectedFilter) {
           case "dessert":
-            return title.includes("cookie") || title.includes("cake") || title.includes("chocolate");
+            return (
+              title.includes("cookie") ||
+              title.includes("cake") ||
+              title.includes("chocolate")
+            );
           case "main":
-            return title.includes("risotto") || title.includes("pasta") || title.includes("chicken");
+            return (
+              title.includes("risotto") ||
+              title.includes("pasta") ||
+              title.includes("chicken")
+            );
           case "salad":
             return title.includes("salad") || title.includes("quinoa");
           default:
@@ -61,19 +73,50 @@ export default function Main() {
 
   const filterOptions = [
     { value: "all", label: "All Recipes", count: recipes.length },
-    { value: "dessert", label: "Desserts", count: recipes.filter(r => r.title.toLowerCase().includes("cookie") || r.title.toLowerCase().includes("chocolate")).length },
-    { value: "main", label: "Main Dishes", count: recipes.filter(r => r.title.toLowerCase().includes("risotto")).length },
-    { value: "salad", label: "Salads", count: recipes.filter(r => r.title.toLowerCase().includes("salad")).length },
+    {
+      value: "dessert",
+      label: "Desserts",
+      count: recipes.filter(
+        (r) =>
+          r.title.toLowerCase().includes("cookie") ||
+          r.title.toLowerCase().includes("chocolate")
+      ).length,
+    },
+    {
+      value: "main",
+      label: "Main Dishes",
+      count: recipes.filter((r) =>
+        r.title.toLowerCase().includes("risotto")
+      ).length,
+    },
+    {
+      value: "salad",
+      label: "Salads",
+      count: recipes.filter((r) =>
+        r.title.toLowerCase().includes("salad")
+      ).length,
+    },
   ];
 
   return (
     <div className="app-container">
       {/* Search and Filter Header */}
       <div className="search-header">
+        {/* Welcome Bar with User Info */}
+        <div className="welcome-bar">
+          <div className="user-greeting">
+            <div className="user-icon">{user?.name?.charAt(0) || 'U'}</div>
+            <span>Welcome, {user?.name || 'User'}!</span>
+          </div>
+          <button className="logout-button" onClick={onLogout}>
+            Sign Out
+          </button>
+        </div>
+        
         <div className="search-container">
           <h1 className="app-title">Recipe Collection</h1>
           <p className="app-subtitle">Discover and explore delicious recipes</p>
-          
+
           {/* Search Bar */}
           <div className="search-bar">
             <input
@@ -95,7 +138,9 @@ export default function Main() {
             {filterOptions.map((option) => (
               <span
                 key={option.value}
-                className={`filter-badge ${selectedFilter === option.value ? "active" : ""}`}
+                className={`filter-badge ${
+                  selectedFilter === option.value ? "active" : ""
+                }`}
                 onClick={() => setSelectedFilter(option.value)}
               >
                 {option.label} ({option.count})
@@ -113,11 +158,20 @@ export default function Main() {
                 )}
               </p>
             ) : (
-              <p className="results-count">
-                Showing all {recipes.length} recipes
-              </p>
+              <p className="results-count">Showing all {recipes.length} recipes</p>
             )}
           </div>
+
+          {/* Add Recipe Button */}
+          <button
+            className="add-recipe-button"
+            onClick={() => setShowForm((prev) => !prev)}
+          >
+            {showForm ? "✕ Close Form" : "➕ Add New Recipe"}
+          </button>
+
+          {/* Input Form */}
+          {showForm && <RecipeInput onAddRecipe={addRecipe} />}
         </div>
       </div>
 
@@ -137,15 +191,11 @@ export default function Main() {
           </div>
         ) : (
           filteredRecipes.map((recipe) => (
-            <div key={recipe._id} className="recipe-card">
-              {/* Header */}
+            <div key={recipe.id} className="recipe-card">
               <div className="recipe-header">
                 <h2 className="recipe-title">{recipe.title}</h2>
               </div>
-
-              {/* Content */}
               <div className="recipe-content">
-                {/* Ingredients Section */}
                 <div className="ingredients-section">
                   <h3 className="section-title">🥘 Ingredients</h3>
                   <ul className="ingredients-list">
@@ -156,8 +206,6 @@ export default function Main() {
                     ))}
                   </ul>
                 </div>
-
-                {/* Instructions Section */}
                 <div className="instructions-section">
                   <h3 className="section-title">📝 Instructions</h3>
                   <ol className="instructions-list">

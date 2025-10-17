@@ -24,11 +24,64 @@ body {
   background: linear-gradient(135deg, #9bccbc 0%, #83b4a6 100%);
   padding: 3rem 1.5rem;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 
 .search-container {
   max-width: 1200px;
   margin: 0 auto;
+}
+
+/* Welcome Bar & User Info */
+.welcome-bar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 0.5rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  backdrop-filter: blur(5px);
+}
+
+.user-greeting {
+  color: white;
+  font-weight: 500;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.user-greeting .user-icon {
+  background: white;
+  color: #10b981;
+  border-radius: 50%;
+  width: 1.75rem;
+  height: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.logout-button {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50px;
+  padding: 0.35rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.logout-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
 }
 
 .app-title {
@@ -328,6 +381,225 @@ body {
   transform: translateY(0);
 }
 
+/* Add Recipe Button */
+.add-recipe-button {
+  display: block;
+  margin: 1.5rem auto;
+  padding: 0.75rem 2rem;
+  background: linear-gradient(to right, #75d3b3, #4cd4a9);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.add-recipe-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.15);
+}
+
+.add-recipe-button:active {
+  transform: translateY(0);
+}
+
+/* Recipe Form Styling */
+.recipe-form {
+  background: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  margin: 0 auto 2rem;
+  max-width: 800px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  border-top: 5px solid #10b981;
+  animation: fadeIn 0.5s ease;
+}
+
+.recipe-form h2 {
+  color: #10b981;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #374151;
+}
+
+.form-group small {
+  display: block;
+  color: #6b7280;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+.recipe-form input,
+.recipe-form textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.25rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.recipe-form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.recipe-form input:focus,
+.recipe-form textarea:focus {
+  outline: none;
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+
+.recipe-form button[type="submit"] {
+  width: 100%;
+  padding: 0.75rem;
+  background: linear-gradient(to right, #70b09a, #059669);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 0.5rem;
+}
+
+.recipe-form button[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(51, 188, 142, 0.514);
+}
+
+.recipe-form button[type="submit"]:active {
+  transform: translateY(0);
+}
+
+/* Authentication Styling */
+.landing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  min-height: 100vh;
+  background: linear-gradient(to bottom right, #ecfdf5, #d1fae5);
+}
+
+.mode-switch {
+  display: flex;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 50px;
+  padding: 0.3rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.mode-switch button {
+  padding: 0.75rem 2rem;
+  border: none;
+  background: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #10b981;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.mode-switch button.active {
+  background: white;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  color: #059669;
+}
+
+/* Login and Register Forms */
+form {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+form h2 {
+  font-size: 1.75rem;
+  color: #10b981;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #374151;
+  font-weight: 500;
+}
+
+form input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+form input:focus {
+  outline: none;
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+
+form button[type="submit"] {
+  width: 100%;
+  padding: 0.75rem;
+  background: linear-gradient(to right, #10b981, #059669);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-top: 1rem;
+}
+
+form button[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+form button[type="submit"]:active {
+  transform: translateY(0);
+}
+
+/* Error Message Styling */
+.error-message {
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .app-title {
@@ -339,7 +611,20 @@ body {
   }
 
   .search-header {
-    padding: 2rem 1rem;
+    padding: 2rem 1rem 1.5rem;
+  }
+  
+  .welcome-bar {
+    padding: 0.4rem 1rem;
+  }
+
+  .user-greeting {
+    font-size: 0.8rem;
+  }
+  
+  .logout-button {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
   }
 
   .filter-container {
@@ -353,5 +638,18 @@ body {
 
   .recipe-container {
     padding: 1.5rem 1rem;
+  }
+  
+  .landing {
+    padding: 1.5rem 1rem;
+  }
+  
+  .mode-switch button {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+  }
+  
+  form {
+    padding: 1.5rem;
   }
 }
