@@ -31,9 +31,7 @@ function App() {
         ? <Landing onAuth={handleAuth} />
         : (
           <>
-            <h1>Welcome, {user ? user.name : 'User'}!</h1>
-            <button onClick={handleLogout} style={{position:'absolute',top:10,right:10}}>Logout</button>
-            <Main />
+            <Main user={user} onLogout={handleLogout} />
           </>
         )
       }
