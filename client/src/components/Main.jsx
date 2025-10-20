@@ -12,8 +12,9 @@ export default function Main({ user, onLogout }) {
   // Load from backend instead of mockdata.js
   useEffect(() => {
     api.get('/recipes/public')
-      .then((res) => res.json())
-      .then((data) => setRecipes(data.recipes))
+      .then((res) => {
+        setRecipes(res.data || []);
+      })
       .catch((err) => console.error("Failed to load recipes", err));
   }, []);
 
