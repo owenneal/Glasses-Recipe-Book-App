@@ -48,6 +48,12 @@ async function updateRecipe(req, res) {
         if (!recipe) {
             return res.status(404).json({ message: 'Recipe not found.' });
         }
+
+
+        if (recipe.author.toString() !== req.user.id) {
+            return res.status(403).json({ message: 'Unauthorized to update this recipe.' });
+        }
+
         Object.assign(recipe, req.body);
         await recipe.save();
         res.status(200).json(recipe);
@@ -64,7 +70,6 @@ async function deleteRecipe(req, res) {
         if (!recipe) {
             return res.status(404).json({ message: 'Recipe not found.' });
         }
-        await recipe.deleteOne();
         res.status(200).json({ message: 'Recipe deleted successfully.' });
     } catch (error) {
         console.error('Error deleting recipe:', error);
