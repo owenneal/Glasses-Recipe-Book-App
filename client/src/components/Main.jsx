@@ -3,7 +3,7 @@ import "../styles.css";
 import RecipeInput from "./Input";
 import api from "../services/api";
 
-export default function Main({ user, onLogout }) {
+export default function Main({ user, onLogout, onNavigate }) {
   const [recipes, setRecipes] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
@@ -110,9 +110,17 @@ export default function Main({ user, onLogout }) {
             <div className="user-icon">{user?.name?.charAt(0) || 'U'}</div>
             <span>Welcome, {user?.name || 'User'}!</span>
           </div>
-          <button className="logout-button" onClick={onLogout}>
-            Sign Out
-          </button>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <button
+              className="logout-button"
+              onClick={() => onNavigate('myRecipes')}
+            >
+              My Recipes
+            </button>
+            <button className="logout-button" onClick={onLogout}>
+              Sign Out
+            </button>
+          </div>
         </div>
         
         <div className="search-container">
