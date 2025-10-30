@@ -653,3 +653,43 @@ form button[type="submit"]:active {
     padding: 1.5rem;
   }
 }
+
+
+
+.edit-button,
+.delete-button {
+    flex: 1;
+    padding: 0.6rem 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    color: white;
+}
+
+.edit-button {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+}
+
+.edit-button:hover {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.delete-button {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+.delete-button:hover {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.edit-button:active,
+.delete-button:active {
+    transform: translateY(0);
+}

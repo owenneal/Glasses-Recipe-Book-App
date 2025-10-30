@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getAllMyRecipes, updateRecipe, deleteRecipe } from '../services/api';
+import { getAllMyRecipes, deleteRecipe } from '../services/api';
 import RecipeCard from './RecipeCard';
 import EditRecipeForm from './EditRecipeForm';
 import '../styles.css';
