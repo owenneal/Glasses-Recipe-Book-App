@@ -7,10 +7,12 @@
 import React, { useState } from 'react';
 import Main from './components/Main';
 import Landing from './components/Landing';
+import MyRecipes from './components/MyRecipes';
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
   const [user, setUser] = useState(null);
+  const [currentPage, setCurrentPage] = useState('main');
 
 
   const handleAuth = (jwt, userObj) => {
@@ -23,6 +25,7 @@ function App() {
     setToken('');
     setUser(null);
     localStorage.removeItem('token');
+    setCurrentPage('main');
   };
 
   return (
@@ -31,7 +34,11 @@ function App() {
         ? <Landing onAuth={handleAuth} />
         : (
           <>
-            <Main user={user} onLogout={handleLogout} />
+            {currentPage === 'main' ? (
+              <Main user={user} onLogout={handleLogout} onNavigate={setCurrentPage} />
+            ) : ( 
+              <MyRecipes user={user} onNavigate={setCurrentPage} />
+            )}
           </>
         )
       }
