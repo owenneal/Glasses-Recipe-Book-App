@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { getAllMyRecipes, updateRecipe, deleteRecipe } from '../services/api';
 import RecipeCard from './RecipeCard';
+import EditRecipeForm from './EditRecipeForm';
 import '../styles.css';
 
 export default function MyRecipes({ user, onLogout, onNavigate }) {
     const [recipes, setRecipes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [editingRecipe, setEditingRecipe] = useState(null);
 
     useEffect(() => {
         const fetchRecipes = async () => {
@@ -22,6 +24,30 @@ export default function MyRecipes({ user, onLogout, onNavigate }) {
 
         fetchRecipes();
     }, []);
+
+
+    const handleDelete = async (recipeId) => {
+        if (window.confirm("Are you sure you want to delete this recipe?")) {
+            try {
+                await deleteRecipe(recipeId);
+                setRecipes(recipes.filter(recipe => recipe._id !== recipeId));
+            } catch (error) {
+                console.error("Error deleting recipe:", error);
+                alert("Failed to delete recipe. Please try again.");
+            }
+        }
+    };
+
+    const handleUpdate = (updatedRecipe) => {
+        setRecipes(recipes.map(recipe => 
+            recipe._id === updatedRecipe._id ? updatedRecipe : recipe
+        ));
+        setEditingRecipe(null);
+    };
+
+    const handleCancelEdit = () => {
+        setEditingRecipe(null);
+    };
 
     return (
         <div className="app-container">
