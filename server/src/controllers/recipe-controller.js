@@ -109,6 +109,10 @@ async function rateRecipe(req, res) {
             return res.status(404).json({ message: 'Recipe not found.' });
         }
 
+        if (recipe.author.toString() === userId) {
+            return res.status(403).json({ message: "You cannot rate your own recipe." });
+        }
+
 
         // checks if a user already rated the recipe
         const existingRatingIndex = recipe.ratings.findIndex(r => r.user.toString() === userId);

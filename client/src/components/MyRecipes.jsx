@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getAllMyRecipes, deleteRecipe } from '../services/api';
+import { getAllMyRecipes, deleteRecipe, rateRecipe } from '../services/api';
 import RecipeCard from './RecipeCard';
 import EditRecipeForm from './EditRecipeForm';
 import '../styles.css';
@@ -54,6 +54,18 @@ export default function MyRecipes({ user, onLogout, onNavigate }) {
         setEditingRecipe(null);
     };
 
+    const handleRateRecipe = async (recipeId, rating) => {
+        try {
+            const updatedRecipe = await rateRecipe(recipeId, rating);
+            setRecipes(prevRecipes => 
+                prevRecipes.map(r => (r._id === recipeId ? updatedRecipe : r))
+            );
+        } catch (error) {
+            console.error("Failed to rate recipe:", error);
+            alert(error.response?.data?.message || "An error occurred while rating.");
+        }
+    };
+
 
     if (loading) {
         return (
@@ -105,7 +117,7 @@ export default function MyRecipes({ user, onLogout, onNavigate }) {
             <div className="recipe-container">
                 {recipes.length > 0 ? (
                     recipes.map(recipe => (
-                        <RecipeCard key={recipe._id} recipe={recipe} >
+                        <RecipeCard key={recipe._id} recipe={recipe} onRate={handleRateRecipe} >
                             <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
                                 <button 
                                     className="edit-button"
