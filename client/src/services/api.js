@@ -90,6 +90,18 @@ export const deleteRecipe = async (id) => {
     }
 };
 
+
+
+export const rateRecipe = async (id, rating) => {
+    try {
+        const response = await api.post(`/recipes/${id}/rate`, { rating });
+        return response.data;
+    } catch (error) {
+        console.error('Error rating recipe:', error);
+        throw error;
+    }
+};
+
 export default api;
 
 

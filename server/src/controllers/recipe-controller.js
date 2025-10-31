@@ -93,11 +93,51 @@ async function searchRecipes(req, res) {
     }
 }
 
+// new function to rate a recipe or update rating if user already rated
+async function rateRecipe(req, res) {
+    try {
+        const { rating } = req.body;
+        const userId = req.user.id;
+        const recipeId = req.params.id;
+
+        if (!rating || rating < 1 || rating > 5) {
+            return res.status(400).json({ message: 'Rating must be between 1 and 5.' });
+        }
+
+        const recipe = await Recipe.findById(recipeId);
+        if (!recipe) {
+            return res.status(404).json({ message: 'Recipe not found.' });
+        }
+
+        if (recipe.author.toString() === userId) {
+            return res.status(403).json({ message: "You cannot rate your own recipe." });
+        }
+
+
+        // checks if a user already rated the recipe
+        const existingRatingIndex = recipe.ratings.findIndex(r => r.user.toString() === userId);
+        if (existingRatingIndex > -1) {
+            recipe.ratings[existingRatingIndex].rating = rating;
+        } else {
+            recipe.ratings.push({ user: userId, rating });
+        }
+
+        await recipe.save();
+        const updatedRecipe = await Recipe.findById(recipeId).populate('author', 'name email');
+
+        res.status(200).json(updatedRecipe);
+    } catch (error) {
+        console.error('Error rating recipe:', error);
+        res.status(500).json({ message: 'Internal server error.' });
+    }
+}
+
 module.exports = {
     createRecipe,
     getRecipeById,
     getPublicRecipes,
     updateRecipe,
     deleteRecipe,
-    searchRecipes
+    searchRecipes,
+    rateRecipe,
 };

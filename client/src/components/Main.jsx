@@ -1,7 +1,8 @@
 import { useEffect, useState, useMemo } from "react";
 import "../styles.css";
 import RecipeInput from "./Input";
-import api from "../services/api";
+import api, { rateRecipe } from "../services/api";
+import RecipeCard from "./RecipeCard";
 
 export default function Main({ user, onLogout, onNavigate }) {
   const [recipes, setRecipes] = useState([]);
@@ -21,6 +22,19 @@ export default function Main({ user, onLogout, onNavigate }) {
   // Add new recipe to state
   const addRecipe = (newRecipe) => {
     setRecipes((prev) => [...prev, newRecipe]);
+  };
+
+
+  const handleRateRecipe = async (recipeId, rating) => {
+    try {
+      const updatedRecipe = await rateRecipe(recipeId, rating);
+      setRecipes(prevRecipes => 
+        prevRecipes.map(r => (r._id === recipeId ? updatedRecipe : r))
+      );
+    } catch (error) {
+      console.error("Failed to rate recipe:", error);
+      alert(error.response?.data?.message || "You must be logged in to rate a recipe.");
+    }
   };
 
   // Filtering logic
@@ -201,33 +215,7 @@ export default function Main({ user, onLogout, onNavigate }) {
           </div>
         ) : (
           filteredRecipes.map((recipe) => (
-            <div key={recipe.id} className="recipe-card">
-              <div className="recipe-header">
-                <h2 className="recipe-title">{recipe.title}</h2>
-              </div>
-              <div className="recipe-content">
-                <div className="ingredients-section">
-                  <h3 className="section-title">🥘 Ingredients</h3>
-                  <ul className="ingredients-list">
-                    {recipe.ingredients.map((ing, i) => (
-                      <li key={i} className="ingredient-item">
-                        • {ing}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="instructions-section">
-                  <h3 className="section-title">📝 Instructions</h3>
-                  <ol className="instructions-list">
-                    {recipe.instructions.map((step, i) => (
-                      <li key={i} className="instruction-item">
-                        {i + 1}. {step}
-                      </li>
-                    ))}
-                  </ol>
-                </div>
-              </div>
-            </div>
+            <RecipeCard key={recipe.id} recipe={recipe} onRate={handleRateRecipe} />
           ))
         )}
       </div>

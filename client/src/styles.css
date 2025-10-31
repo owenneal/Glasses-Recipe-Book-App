@@ -257,6 +257,29 @@ body {
   font-weight: bold;
   color: white;
   margin: 0;
+  margin-bottom: 0.5rem;
+}
+
+/*Star rating styles*/
+.star-rating {
+  display: flex;
+  align-items: center;
+  gap: .1rem;
+}
+
+.star {
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, .3);
+}
+
+.star.filled {
+  color: #facc14;
+}
+
+.rating-info {
+  color: white;
+  font-size: 0.875rem;
+  margin-left: 0.5rem;
 }
 
 /* Card Content */
