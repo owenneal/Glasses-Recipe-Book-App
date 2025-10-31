@@ -46,11 +46,34 @@ const recipeSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
+    ratings: [
+        {
+            user: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User',
+                required: true
+            },
+            rating: {
+                type: Number,
+                required: true,
+                min: 1,
+                max: 5
+            }
+        }
+    ],
     public: {
         type: Boolean,
         default: false
     }
-}, { timestamps: true });
+}, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } });
+
+
+// added virtual field for average rating
+recipeSchema.virtual('averageRating').get(function() {
+    if (this.ratings.length === 0) return 0;
+    const total = this.ratings.reduce((sum, r) => sum + r.rating, 0);
+    return total / this.ratings.length;
+});
 
 const Recipe = mongoose.model('Recipe', recipeSchema);
 
