@@ -1,4 +1,4 @@
-const { Recipe } = require('../models');
+const { Recipe } = require('../models/models');
 
 // creating a recipe in the database
 // needs: title, ingredients, instructions, public

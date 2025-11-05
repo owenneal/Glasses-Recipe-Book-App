@@ -9,11 +9,11 @@ const express = require('express');
 const router = express.Router();
 
 // import  any controllers
-const exampleController = require('../controllers/index');
+const exampleController = require('../controllers/example-controller');
 const authController = require('../controllers/auth-controller');
 const recipeController = require('../controllers/recipe-controller');
 const authenticate = require('../middleware/auth');
-const { Recipe } = require('../models');
+const { Recipe } = require('../models/models');
 
 
 
