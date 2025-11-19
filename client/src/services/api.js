@@ -16,7 +16,6 @@ const getApiBaseUrl = () => {
     return process.env.REACT_APP_API_URL;
 }
 
-
 const api = axios.create({
     baseURL: `${getApiBaseUrl()}/api`,
     headers: { 'Content-Type': 'application/json' }

@@ -2,6 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import "../styles.css";
 import RecipeInput from "./Input";
 import api from "../services/api";
+import { Link } from "react-router-dom";
 
 export default function Main({ user, onLogout }) {
   const [recipes, setRecipes] = useState([]);
@@ -114,7 +115,7 @@ export default function Main({ user, onLogout }) {
             Sign Out
           </button>
         </div>
-        
+
         <div className="search-container">
           <h1 className="app-title">Recipe Collection</h1>
           <p className="app-subtitle">Discover and explore delicious recipes</p>
@@ -140,9 +141,8 @@ export default function Main({ user, onLogout }) {
             {filterOptions.map((option) => (
               <span
                 key={option.value}
-                className={`filter-badge ${
-                  selectedFilter === option.value ? "active" : ""
-                }`}
+                className={`filter-badge ${selectedFilter === option.value ? "active" : ""
+                  }`}
                 onClick={() => setSelectedFilter(option.value)}
               >
                 {option.label} ({option.count})
@@ -193,7 +193,12 @@ export default function Main({ user, onLogout }) {
           </div>
         ) : (
           filteredRecipes.map((recipe) => (
-            <div key={recipe.id} className="recipe-card">
+            <Link
+              key={recipe._id}
+              to={`/recipe/${recipe._id}`}
+              className="recipe-card recipe-link"
+              style={{ textDecoration: "none" }}
+            >
               <div className="recipe-header">
                 <h2 className="recipe-title">{recipe.title}</h2>
               </div>
@@ -218,9 +223,22 @@ export default function Main({ user, onLogout }) {
                     ))}
                   </ol>
                 </div>
+
+                <button
+                  onClick={(e) => {
+                    e.preventDefault(); // prevents link click
+                    const shareUrl = `${window.location.origin}/share/${recipe._id}`;
+                    navigator.clipboard.writeText(shareUrl);
+                    alert("Recipe link copied to clipboard!");
+                  }}
+                  className="share-button"
+                >
+                  Share Recipe
+                </button>
               </div>
-            </div>
+            </Link>
           ))
+
         )}
       </div>
     </div>

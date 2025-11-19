@@ -489,6 +489,19 @@ body {
   transform: translateY(0);
 }
 
+.share-button {
+  padding: 0.75rem;
+  background: linear-gradient(to right, #70b09a, #059669);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 0.5rem;
+}
+
 /* Authentication Styling */
 .landing {
   display: flex;
@@ -652,4 +665,66 @@ form button[type="submit"]:active {
   form {
     padding: 1.5rem;
   }
+}
+
+.recipe-detail-page {
+  max-width: 800px;
+  margin: 2rem auto;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+}
+
+.recipe-detail-title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #333;
+  text-align: center;
+}
+
+.recipe-detail-section {
+  margin-top: 1.5rem;
+}
+
+.detail-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.back-button,
+.edit-button,
+.delete-button,
+.save-button,
+.cancel-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s;
+}
+
+.back-button:hover { background-color: #0056b3; }
+.edit-button:hover { background-color: #ffc107; color: #333; }
+.delete-button:hover { background-color: #dc3545; }
+.save-button:hover { background-color: #28a745; }
+.cancel-button:hover { background-color: #6c757d; }
+
+.input-field, .input-area {
+  width: 100%;
+  margin: 0.5rem 0;
+  padding: 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.input-area {
+  height: 100px;
+  resize: vertical;
 }

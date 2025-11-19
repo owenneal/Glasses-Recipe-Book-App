@@ -5,8 +5,11 @@
 
 
 import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Main from './components/Main';
 import Landing from './components/Landing';
+import SharedRecipe from "./components/SharedRecipe";
+import RecipeDetail from "./components/RecipeDetail";
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
@@ -26,16 +29,19 @@ function App() {
   };
 
   return (
-    <div className="App">
-      {!token
-        ? <Landing onAuth={handleAuth} />
-        : (
-          <>
-            <Main user={user} onLogout={handleLogout} />
-          </>
-        )
-      }
-    </div>
+    <Router>
+      <div className="App">
+        {!token ? (
+          <Landing onAuth={handleAuth} />
+        ) : (
+          <Routes>
+            <Route path="/" element={<Main user={user} onLogout={handleLogout} />} />
+            <Route path="/share/:id" element={<SharedRecipe />} />
+            <Route path="/recipe/:id" element={<RecipeDetail user={user} />} />
+          </Routes>
+        )}
+      </div>
+    </Router>
   );
 }
 
