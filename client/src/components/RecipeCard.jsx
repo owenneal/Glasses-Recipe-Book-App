@@ -48,7 +48,7 @@ const StarRating = ({ rating, count, onRate, recipeId }) => {
 
 
 
-export default function RecipeCard({ recipe, children, onRate}) {
+export default function RecipeCard({ recipe, children, onRate, onShare}) {
   if (!recipe) return null;
 
   return (
@@ -83,6 +83,19 @@ export default function RecipeCard({ recipe, children, onRate}) {
           ))}
         </ol>
       </div>
+
+      {/* Share button for all recipes */}
+      {onShare && (
+        <button 
+          onClick={() => onShare(recipe)}
+          className="share-button"
+        >
+          📧 Share Recipe
+        </button>
+      )}
+
+
+
       {/* this is where action buttons (like Edit/Delete) will be rendered */}
       {children && <div className="recipe-actions" style={{ marginTop: 'auto', paddingTop: '1rem', display: 'flex', gap: '1rem' }}>{children}</div>}
     </div>

@@ -1,14 +1,15 @@
 import { useEffect, useState, useMemo } from "react";
 import "../styles.css";
 import RecipeInput from "./Input";
-import api, { rateRecipe } from "../services/api";
+import api, { rateRecipe, shareRecipe } from "../services/api";
 import RecipeCard from "./RecipeCard";
-
+import ShareRecipeModal from "./ShareRecipeModal";
 export default function Main({ user, onLogout, onNavigate }) {
   const [recipes, setRecipes] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
   const [showForm, setShowForm] = useState(false);
+  const [sharingRecipe, setSharingRecipe] = useState(null);
 
   // Load from backend instead of mockdata.js
   useEffect(() => {
@@ -22,6 +23,19 @@ export default function Main({ user, onLogout, onNavigate }) {
   // Add new recipe to state
   const addRecipe = (newRecipe) => {
     setRecipes((prev) => [...prev, newRecipe]);
+  };
+
+
+  const handleShareRecipe = (recipe) => {
+    setSharingRecipe(recipe);
+  };
+
+  const handleShareSubmit = async (recipeId, email) => {
+    await shareRecipe(recipeId, email);
+  };
+
+  const handleCloseShareModal = () => {
+    setSharingRecipe(null);
   };
 
 
@@ -215,10 +229,18 @@ export default function Main({ user, onLogout, onNavigate }) {
           </div>
         ) : (
           filteredRecipes.map((recipe) => (
-            <RecipeCard key={recipe.id} recipe={recipe} onRate={handleRateRecipe} />
+            <RecipeCard key={recipe.id} recipe={recipe} onRate={handleRateRecipe} onShare={handleShareRecipe} />
           ))
         )}
       </div>
+
+       {sharingRecipe && (
+        <ShareRecipeModal
+          recipe={sharingRecipe}
+          onShare={handleShareSubmit}
+          onClose={handleCloseShareModal}
+        />
+      )}
     </div>
   );
 }
