@@ -38,6 +38,7 @@ router.get('/recipes/:id', recipeController.getRecipeById);
 router.put('/recipes/:id', authenticate, recipeController.updateRecipe);
 router.delete('/recipes/:id', authenticate, recipeController.deleteRecipe);
 router.post('/recipes/:id/rate', authenticate, recipeController.rateRecipe);
+router.post('/recipes/:id/share', authenticate, recipeController.shareRecipe);
 
 
 
