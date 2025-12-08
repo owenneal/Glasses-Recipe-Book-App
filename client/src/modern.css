@@ -1,0 +1,383 @@
+/* --- MODERN THEME --- */
+
+/* 1. Foundational Styles & Variables
+-------------------------------------------------- */
+:root {
+  --bg-primary: #111827;    /* Very dark gray, almost black */
+  --bg-secondary: #1f2937;  /* Dark gray */
+  --bg-tertiary: #374151;   /* Medium-dark gray */
+  --text-primary: #f9fafb;  /* Very light gray, almost white */
+  --text-secondary: #d1d5db;/* Light gray */
+  --text-muted: #9ca3af;    /* Muted gray */
+  --accent-primary: #34d399;/* Bright green */
+  --accent-secondary: #60a5fa;/* Soft blue */
+  --accent-danger: #f87171; /* Soft red */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --radius: 0.75rem; /* 12px */
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-primary);
+  color: var(--text-secondary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 2. Main Layout & App Container
+-------------------------------------------------- */
+.app-container {
+  background-color: var(--bg-primary);
+  min-height: 100vh;
+}
+
+.search-header {
+  background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+  padding: 4rem 1.5rem 2rem;
+  position: relative;
+  border-bottom: 1px solid var(--bg-tertiary);
+}
+
+.recipe-container {
+  display: grid;
+  gap: 1.5rem;
+  padding: 2rem 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) { .recipe-container { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1200px) { .recipe-container { grid-template-columns: repeat(3, 1fr); } }
+
+/* 3. Recipe Card
+-------------------------------------------------- */
+.recipe-card {
+  background: var(--bg-secondary);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--bg-tertiary);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.recipe-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--accent-primary);
+}
+
+.recipe-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--bg-tertiary);
+}
+
+.recipe-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 0.5rem;
+}
+
+.recipe-category-tag {
+  display: inline-block;
+  background: var(--accent-primary);
+  color: var(--bg-primary);
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-top: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.recipe-content {
+  padding: 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.section-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--accent-primary);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--bg-tertiary);
+}
+
+.ingredients-list, .instructions-list {
+  list-style: none;
+  padding-left: 0.5rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.recipe-actions {
+  margin-top: auto;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--bg-tertiary);
+  display: flex;
+  gap: 1rem;
+}
+
+/* 4. Buttons & Forms
+-------------------------------------------------- */
+button, .button {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0.6rem 1.25rem;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+button:hover, .button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+.edit-button {
+  background-color: var(--accent-secondary);
+  color: var(--text-primary);
+}
+
+.delete-button {
+  background-color: var(--accent-danger);
+  color: var(--text-primary);
+}
+
+.share-button, .add-recipe-button {
+  background-color: var(--accent-primary);
+  color: var(--bg-primary);
+  width: 100%;
+}
+
+.view-button {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  width: 100%;
+}
+
+.favorite-icon {
+  background: none;
+  font-size: 1.5rem;
+  padding: 0;
+}
+.favorite-icon.favorited { color: var(--accent-danger); }
+
+/* Forms */
+.recipe-form, form {
+  background: var(--bg-secondary);
+  border-radius: var(--radius);
+  padding: 2rem;
+  border: 1px solid var(--bg-tertiary);
+}
+
+.form-group label, form h2 {
+  color: var(--text-primary);
+}
+
+.recipe-form input, .recipe-form textarea, .recipe-form select,
+form input, form textarea, form select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: var(--bg-primary);
+  border: 1px solid var(--bg-tertiary);
+  color: var(--text-primary);
+  border-radius: 0.5rem;
+  font-size: 1rem;
+}
+
+.recipe-form input:focus, .recipe-form textarea:focus, .recipe-form select:focus,
+form input:focus, form textarea:focus, form select:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.3);
+}
+
+/* 5. Header, Search & Filters
+-------------------------------------------------- */
+.welcome-bar {
+  position: absolute;
+  top: 0; right: 0; left: 0;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(31, 41, 55, 0.5);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--bg-tertiary);
+  z-index: 10;
+}
+
+.user-greeting {
+  color: var(--text-primary);
+}
+
+.logout-button {
+  background: none;
+  color: var(--text-secondary);
+  padding: 0.5rem 1rem;
+}
+.logout-button:hover { background: var(--bg-tertiary); color: var(--text-primary); }
+
+.app-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.app-subtitle {
+  color: var(--text-muted);
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.search-bar {
+  position: relative;
+  max-width: 600px;
+  margin: 0 auto 2rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 1rem 3.5rem 1rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 50px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--bg-tertiary);
+  color: var(--text-primary);
+}
+.search-input:focus { box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.3); }
+
+.clear-button {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+}
+
+.filter-badge, .filter-tab {
+  padding: 0.5rem 1.25rem;
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.filter-badge:hover, .filter-tab:hover {
+  background: #4b5563;
+  color: var(--text-primary);
+}
+
+.filter-badge.active, .filter-tab.active {
+  background: var(--accent-primary);
+  color: var(--bg-primary);
+  font-weight: 700;
+}
+
+/* 6. Modals & Details Page
+-------------------------------------------------- */
+.modal-overlay {
+  background: rgba(17, 24, 39, 0.8);
+  backdrop-filter: blur(5px);
+}
+
+.share-modal, .details-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--bg-tertiary);
+}
+
+.details-header {
+  background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--bg-secondary) 100%);
+  text-align: left;
+  padding: 2rem;
+}
+
+.details-title {
+  font-size: 2.25rem;
+  color: var(--text-primary);
+}
+
+.details-section h3 {
+  color: var(--accent-primary);
+}
+
+/* 7. Authentication / Landing Page
+-------------------------------------------------- */
+.landing {
+  background: var(--bg-primary);
+}
+
+.mode-switch {
+  background: var(--bg-secondary);
+  border: 1px solid var(--bg-tertiary);
+}
+
+.mode-switch button {
+  color: var(--text-secondary);
+}
+
+.mode-switch button.active {
+  background: var(--accent-primary);
+  color: var(--bg-primary);
+  box-shadow: none;
+}
+
+/* Star Rating */
+.star-rating {
+  display: flex;
+  align-items: center;
+  gap: .25rem;
+}
+
+.star {
+  font-size: 1.25rem;
+  color: var(--bg-tertiary);
+  transition: color 0.2s;
+}
+
+.star.filled {
+  color: #facc15;
+}
+
+.star.hover {
+  color: #fbbF24;
+}
+
+.rating-info {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  margin-left: 0.5rem;
+}
