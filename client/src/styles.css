@@ -951,3 +951,69 @@ form button[type="submit"]:active {
   border-color: #059669;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
+
+.skeleton {
+  animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.skeleton .skeleton-line {
+  background-color: #e5e7eb;
+  border-radius: 4px;
+  margin-bottom: 0.75rem;
+}
+
+.skeleton .title {
+  height: 24px;
+  width: 70%;
+}
+
+.skeleton .rating {
+  height: 20px;
+  width: 50%;
+}
+
+.skeleton .heading {
+  height: 20px;
+  width: 40%;
+  margin-bottom: 1rem;
+}
+
+.skeleton .text {
+  height: 16px;
+  width: 90%;
+}
+
+.skeleton .text.short {
+  width: 60%;
+}
+
+.back-to-top button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #10b981;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: opacity 0.3s, transform 0.3s;
+  z-index: 100;
+}
+
+.back-to-top button:hover {
+  background: #059669;
+  transform: scale(1.1);
+}

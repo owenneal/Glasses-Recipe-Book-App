@@ -4,6 +4,7 @@ import RecipeInput from "./Input";
 import api, { rateRecipe, shareRecipe, toggleFavorite, checkFavoriteStatus } from "../services/api";
 import RecipeCard from "./RecipeCard";
 import ShareRecipeModal from "./ShareRecipeModal";
+import BackToTopButton from "./BackToTopButton";
 export default function Main({ user, onLogout, onNavigate, onViewRecipe }) {
   const [recipes, setRecipes] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -20,15 +21,18 @@ export default function Main({ user, onLogout, onNavigate, onViewRecipe }) {
       })
       .catch((err) => console.error("Failed to load recipes", err));
 
-
-    api.get('/profile')
-      .then((res) => {
-          const favoriteIds = (res.data.favorites || []).map(f => f._id);
-          setUserFavorites(favoriteIds);
-        })
-        .catch((err) => console.error("Failed to load favorites", err));
-          setUserFavorites([]);
-  }, []);
+    if (user) {
+      api.get('/profile')
+        .then((res) => {
+            const favoriteIds = (res.data.favorites || []).map(f => f._id);
+            setUserFavorites(favoriteIds);
+          })
+          .catch((err) => console.error("Failed to load favorites", err));
+            setUserFavorites([]);
+        } else {
+            setUserFavorites([]);
+        }
+  }, [user]);
 
   // Add new recipe to state
   const addRecipe = (newRecipe) => {
@@ -274,6 +278,7 @@ export default function Main({ user, onLogout, onNavigate, onViewRecipe }) {
           onClose={handleCloseShareModal}
         />
       )}
+      <BackToTopButton />
     </div>
   );
 }

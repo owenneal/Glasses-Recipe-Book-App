@@ -3,6 +3,8 @@ import { getAllMyRecipes, deleteRecipe, rateRecipe, shareRecipe, toggleFavorite,
 import RecipeCard from './RecipeCard';
 import EditRecipeForm from './EditRecipeForm';
 import ShareRecipeModal from './ShareRecipeModal';
+import RecipeCardSkeleton from './RecipeCardSkeleton';
+import BackToTopButton from './BackToTopButton';
 import '../styles.css';
 
 export default function MyRecipes({ user, onLogout, onNavigate, onViewRecipe }) {
@@ -127,7 +129,11 @@ export default function MyRecipes({ user, onLogout, onNavigate, onViewRecipe }) 
     if (loading) {
         return (
             <div className="app-container">
-                <p>Loading your recipes...</p>
+                <div className="recipe-container" style={{ paddingTop: '2rem' }}>
+                    {Array.from({ length: 6 }).map((_, index) => (
+                        <RecipeCardSkeleton key={index} />
+                    ))}
+                </div>
             </div>
         );
     }
@@ -262,6 +268,7 @@ return (
                     onShare={handleShareSubmit}
                 />
             )}
+            <BackToTopButton />
         </div>
     );
 }
