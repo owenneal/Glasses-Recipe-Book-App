@@ -48,7 +48,7 @@ const StarRating = ({ rating, count, onRate, recipeId }) => {
 
 
 
-export default function RecipeCard({ recipe, children, onRate, onShare}) {
+export default function RecipeCard({ recipe, children, onRate, onShare, onView}) {
   if (!recipe) return null;
 
   return (
@@ -83,6 +83,15 @@ export default function RecipeCard({ recipe, children, onRate, onShare}) {
           ))}
         </ol>
       </div>
+
+      {onView && (
+        <button
+        onClick={() => onView(recipe)}
+        className="view-button"
+      >
+        👁️ View Recipe
+      </button>
+      )}
 
       {/* Share button for all recipes */}
       {onShare && (

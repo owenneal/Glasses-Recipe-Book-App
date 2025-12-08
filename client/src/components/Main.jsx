@@ -4,7 +4,7 @@ import RecipeInput from "./Input";
 import api, { rateRecipe, shareRecipe } from "../services/api";
 import RecipeCard from "./RecipeCard";
 import ShareRecipeModal from "./ShareRecipeModal";
-export default function Main({ user, onLogout, onNavigate }) {
+export default function Main({ user, onLogout, onNavigate, onViewRecipe }) {
   const [recipes, setRecipes] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
@@ -229,7 +229,7 @@ export default function Main({ user, onLogout, onNavigate }) {
           </div>
         ) : (
           filteredRecipes.map((recipe) => (
-            <RecipeCard key={recipe.id} recipe={recipe} onRate={handleRateRecipe} onShare={handleShareRecipe} />
+            <RecipeCard key={recipe.id} recipe={recipe} onRate={handleRateRecipe} onShare={handleShareRecipe} onView={onViewRecipe} />
           ))
         )}
       </div>

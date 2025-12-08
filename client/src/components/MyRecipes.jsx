@@ -5,7 +5,7 @@ import EditRecipeForm from './EditRecipeForm';
 import ShareRecipeModal from './ShareRecipeModal';
 import '../styles.css';
 
-export default function MyRecipes({ user, onLogout, onNavigate }) {
+export default function MyRecipes({ user, onLogout, onNavigate, onViewRecipe }) {
     const [recipes, setRecipes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -131,7 +131,7 @@ export default function MyRecipes({ user, onLogout, onNavigate }) {
             <div className="recipe-container">
                 {recipes.length > 0 ? (
                     recipes.map(recipe => (
-                        <RecipeCard key={recipe._id} recipe={recipe} onRate={handleRateRecipe} onShare={handleShareRecipe}>
+                        <RecipeCard key={recipe._id} recipe={recipe} onRate={handleRateRecipe} onShare={handleShareRecipe} onView={onViewRecipe}>
                             <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
                                 <button 
                                     className="edit-button"
