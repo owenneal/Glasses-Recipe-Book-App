@@ -1,7 +1,7 @@
 const { createRecipe, getRecipeById, getPublicRecipes, rateRecipe } = require('../controllers/recipe-controller');
-const { Recipe } = require('../models');
+const { Recipe } = require('../model/models');
 
-jest.mock('../models');
+jest.mock('../model/models');
 
 
 describe('Recipe Controller', () => {

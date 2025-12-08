@@ -176,7 +176,13 @@ export default function MyRecipes({ user, onLogout, onNavigate }) {
                 />
             )}
 
-
+            {sharingRecipe && (
+        <ShareRecipeModal
+          recipe={sharingRecipe}
+          onClose={handleCloseShareModal}
+          onShare={handleShareSubmit}
+        />
+      )}
 
         </div>
     );

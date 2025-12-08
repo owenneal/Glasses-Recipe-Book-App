@@ -5,9 +5,9 @@ const { sendRecipeEmail } = require('../utils/email');
 // needs: title, ingredients, instructions, public
 async function createRecipe(req, res) {
     try {
-        const { title, ingredients, instructions, public } = req.body;
+        const { title, ingredients, instructions, public: isPublic } = req.body;
         const author = req.user ? req.user.id : null;
-        const recipe = await Recipe.create({ title, ingredients, instructions, public, author });
+        const recipe = await Recipe.create({ title, ingredients, instructions, public: isPublic, author });
         res.status(201).json(recipe);
     } catch (error) {
         console.error('Error creating recipe:', error);
@@ -133,7 +133,7 @@ async function rateRecipe(req, res) {
     }
 }
 
-
+// recipes https://ethereal.email/messages
 async function shareRecipe(req, res) {
     try {
         const { recipientEmail } = req.body;

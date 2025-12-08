@@ -13,7 +13,7 @@ function createTransporter() {
 
 // Validate email domain
 function isAllowedDomain(email) {
-    const allowedDomains = (process.env.ALLOWED_EMAIL_DOMAINS || 'gmail.com,outlook.com,yahoo.com')
+    const allowedDomains = (process.env.ALLOWED_EMAIL_DOMAINS || 'gmail.com,outlook.com,yahoo.com,ethereal.email')
         .split(',')
         .map(d => d.trim().toLowerCase());
     
