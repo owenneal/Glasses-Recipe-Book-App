@@ -100,27 +100,7 @@ export default function Main({ user, onLogout, onNavigate, onViewRecipe }) {
     }
 
     if (selectedFilter !== "all") {
-      filtered = filtered.filter((recipe) => {
-        const title = recipe.title.toLowerCase();
-        switch (selectedFilter) {
-          case "dessert":
-            return (
-              title.includes("cookie") ||
-              title.includes("cake") ||
-              title.includes("chocolate")
-            );
-          case "main":
-            return (
-              title.includes("risotto") ||
-              title.includes("pasta") ||
-              title.includes("chicken")
-            );
-          case "salad":
-            return title.includes("salad") || title.includes("quinoa");
-          default:
-            return true;
-        }
-      });
+      filtered = filtered.filter((recipe) => recipe.category === selectedFilter);
     }
 
     return filtered;
@@ -133,29 +113,12 @@ export default function Main({ user, onLogout, onNavigate, onViewRecipe }) {
 
   const filterOptions = [
     { value: "all", label: "All Recipes", count: recipes.length },
-    {
-      value: "dessert",
-      label: "Desserts",
-      count: recipes.filter(
-        (r) =>
-          r.title.toLowerCase().includes("cookie") ||
-          r.title.toLowerCase().includes("chocolate")
-      ).length,
-    },
-    {
-      value: "main",
-      label: "Main Dishes",
-      count: recipes.filter((r) =>
-        r.title.toLowerCase().includes("risotto")
-      ).length,
-    },
-    {
-      value: "salad",
-      label: "Salads",
-      count: recipes.filter((r) =>
-        r.title.toLowerCase().includes("salad")
-      ).length,
-    },
+    { value: "Dessert", label: "Desserts", count: recipes.filter(r => r.category === 'Dessert').length },
+    { value: "Main Course", label: "Main Dishes", count: recipes.filter(r => r.category === 'Main Course').length },
+    { value: "Salad", label: "Salads", count: recipes.filter(r => r.category === 'Salad').length },
+    { value: "Appetizer", label: "Appetizers", count: recipes.filter(r => r.category === 'Appetizer').length },
+    { value: "Soup", label: "Soups", count: recipes.filter(r => r.category === 'Soup').length },
+    { value: "Breakfast", label: "Breakfast", count: recipes.filter(r => r.category === 'Breakfast').length },
   ];
 
   return (

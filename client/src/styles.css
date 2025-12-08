@@ -1017,3 +1017,16 @@ form button[type="submit"]:active {
   background: #059669;
   transform: scale(1.1);
 }
+
+.recipe-category-tag {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.25);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-top: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}

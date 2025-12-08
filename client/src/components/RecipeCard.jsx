@@ -87,6 +87,7 @@ export default function RecipeCard({ recipe, children, onRate, onShare, onView, 
                     onRate={onRate}
                     recipeId={recipe._id}
                 />
+        {recipe.category && <span className="recipe-category-tag">{recipe.category}</span>}
     </div>
     <div className="recipe-content">
       <div className="ingredients-section">

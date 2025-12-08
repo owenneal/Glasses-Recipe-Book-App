@@ -5,9 +5,9 @@ const { sendRecipeEmail } = require('../utils/email');
 // needs: title, ingredients, instructions, public
 async function createRecipe(req, res) {
     try {
-        const { title, ingredients, instructions, public: isPublic } = req.body;
+        const { title, ingredients, instructions, public: isPublic, category } = req.body;
         const author = req.user ? req.user.id : null;
-        const recipe = await Recipe.create({ title, ingredients, instructions, public: isPublic, author });
+        const recipe = await Recipe.create({ title, ingredients, instructions, public: isPublic, category, author });
         res.status(201).json(recipe);
     } catch (error) {
         console.error('Error creating recipe:', error);

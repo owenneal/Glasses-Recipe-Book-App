@@ -45,6 +45,10 @@ const recipeSchema = new mongoose.Schema({
         default: [],
         required: true
     },
+    category: {
+        type: String,
+        default: 'Uncategorized'
+    },
     author: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
