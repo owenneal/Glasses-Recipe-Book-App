@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import "../styles.css";
 import RecipeInput from "./Input";
-import api, { rateRecipe, shareRecipe } from "../services/api";
+import api, { rateRecipe, shareRecipe, toggleFavorite, checkFavoriteStatus } from "../services/api";
 import RecipeCard from "./RecipeCard";
 import ShareRecipeModal from "./ShareRecipeModal";
 export default function Main({ user, onLogout, onNavigate, onViewRecipe }) {
@@ -10,6 +10,7 @@ export default function Main({ user, onLogout, onNavigate, onViewRecipe }) {
   const [selectedFilter, setSelectedFilter] = useState("all");
   const [showForm, setShowForm] = useState(false);
   const [sharingRecipe, setSharingRecipe] = useState(null);
+  const [userFavorites, setUserFavorites] = useState([]);
 
   // Load from backend instead of mockdata.js
   useEffect(() => {
@@ -18,6 +19,15 @@ export default function Main({ user, onLogout, onNavigate, onViewRecipe }) {
         setRecipes(res.data || []);
       })
       .catch((err) => console.error("Failed to load recipes", err));
+
+
+    api.get('/profile')
+      .then((res) => {
+          const favoriteIds = (res.data.favorites || []).map(f => f._id);
+          setUserFavorites(favoriteIds);
+        })
+        .catch((err) => console.error("Failed to load favorites", err));
+          setUserFavorites([]);
   }, []);
 
   // Add new recipe to state
@@ -36,6 +46,22 @@ export default function Main({ user, onLogout, onNavigate, onViewRecipe }) {
 
   const handleCloseShareModal = () => {
     setSharingRecipe(null);
+  };
+
+
+  const handleFavorite = async (recipeId) => {
+    try {
+      const result = await toggleFavorite(recipeId);
+      
+      if (result.isFavorite) {
+        setUserFavorites([...userFavorites, recipeId]);
+      } else {
+        setUserFavorites(userFavorites.filter(id => id !== recipeId));
+      }
+    } catch (error) {
+      console.error("Failed to toggle favorite:", error);
+      alert(error.response?.data?.message || "You must be logged in to favorite recipes.");
+    }
   };
 
 
@@ -229,7 +255,14 @@ export default function Main({ user, onLogout, onNavigate, onViewRecipe }) {
           </div>
         ) : (
           filteredRecipes.map((recipe) => (
-            <RecipeCard key={recipe.id} recipe={recipe} onRate={handleRateRecipe} onShare={handleShareRecipe} onView={onViewRecipe} />
+            <RecipeCard
+            key={recipe.id} 
+            recipe={recipe} 
+            onRate={handleRateRecipe} 
+            onShare={handleShareRecipe} 
+            onView={onViewRecipe} 
+            onFavorite={handleFavorite} 
+            userFavorites={userFavorites} />
           ))
         )}
       </div>

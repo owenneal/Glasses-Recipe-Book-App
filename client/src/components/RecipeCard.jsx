@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles.css';
 
 
@@ -48,13 +48,39 @@ const StarRating = ({ rating, count, onRate, recipeId }) => {
 
 
 
-export default function RecipeCard({ recipe, children, onRate, onShare, onView}) {
+export default function RecipeCard({ recipe, children, onRate, onShare, onView, onFavorite, userFavorites}) {
+  const [isFavorited, setIsFavorited] = useState(false);
+
+  useEffect(() => {
+
+    if (userFavorites && recipe) {
+      setIsFavorited(userFavorites.includes(recipe._id));
+    }
+  }, [userFavorites, recipe]);
+
+  const handleFavoriteClick = async () => {
+    if (onFavorite) {
+      await onFavorite(recipe._id);
+      setIsFavorited(!isFavorited);
+    }
+  };
   if (!recipe) return null;
 
   return (
       <div className="recipe-card">
     <div className="recipe-header">
-      <h2 className="recipe-title">{recipe.title}</h2>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <h2 className="recipe-title">{recipe.title}</h2>
+        {onFavorite && (
+          <button 
+            onClick={handleFavoriteClick}
+            className={`favorite-icon ${isFavorited ? 'favorited' : ''}`}
+            title={isFavorited ? 'Remove from favorites' : 'Add to favorites'}
+          >
+            {isFavorited ? '❤️' : '🤍'}
+          </button>
+        )}
+      </div>
       <StarRating 
                     rating={recipe.averageRating} 
                     count={recipe.ratings?.length || 0} 

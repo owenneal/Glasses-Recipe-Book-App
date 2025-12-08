@@ -114,6 +114,37 @@ export const shareRecipe = async (id, recipientEmail) => {
     }
 };
 
+export const toggleFavorite = async (id) => {
+    try {
+        const response = await api.post(`/recipes/${id}/favorite`);
+        return response.data;
+    } catch (error) {
+        console.error('Error toggling favorite:', error);
+        throw error;
+    }
+};
+
+export const getFavoriteRecipes = async () => {
+    try {
+        const response = await api.get('/favorites');
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching favorite recipes:', error);
+        throw error;
+    }
+};
+
+export const checkFavoriteStatus = async (id) => {
+    try {
+        const response = await api.get(`/recipes/${id}/favorite-status`);
+        return response.data;
+    } catch (error) {
+        console.error('Error checking favorite status:', error);
+        throw error;
+    }
+};
+
+
 export default api;
 
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getAllMyRecipes, deleteRecipe, rateRecipe, shareRecipe } from '../services/api';
+import { getAllMyRecipes, deleteRecipe, rateRecipe, shareRecipe, toggleFavorite, getFavoriteRecipes } from '../services/api';
 import RecipeCard from './RecipeCard';
 import EditRecipeForm from './EditRecipeForm';
 import ShareRecipeModal from './ShareRecipeModal';
@@ -11,7 +11,10 @@ export default function MyRecipes({ user, onLogout, onNavigate, onViewRecipe }) 
     const [error, setError] = useState(null);
     const [editingRecipe, setEditingRecipe] = useState(null);
     const [sharingRecipe, setSharingRecipe] = useState(null);
-
+    const [favoriteRecipes, setFavoriteRecipes] = useState([]);
+    const [filterMode, setFilterMode] = useState('all');
+    const [userFavoriteIds, setUserFavoriteIds] = useState([]);
+ 
     const handleShareRecipe = (recipe) => {
         setSharingRecipe(recipe);
     };
@@ -28,7 +31,10 @@ export default function MyRecipes({ user, onLogout, onNavigate, onViewRecipe }) 
         const fetchRecipes = async () => {
             try {
                 const userRecipes = await getAllMyRecipes();
-                setRecipes(userRecipes);
+                const favorites = await getFavoriteRecipes();
+                setRecipes(userRecipes || []);
+                setFavoriteRecipes(favorites || []);
+                setUserFavoriteIds((favorites || []).map(f => f._id));
             } catch (error) {
                 setError(error);
             } finally {
@@ -38,6 +44,24 @@ export default function MyRecipes({ user, onLogout, onNavigate, onViewRecipe }) 
 
         fetchRecipes();
     }, []);
+
+    const handleFavorite = async (recipeId) => {
+        try {
+            const result = await toggleFavorite(recipeId);
+            
+            if (result.isFavorite) {
+                const favorites = await getFavoriteRecipes();
+                setFavoriteRecipes(favorites || []);
+                setUserFavoriteIds(favorites ? favorites.map(f => f._id) : []);
+            } else {
+                setFavoriteRecipes(favoriteRecipes.filter(r => r._id !== recipeId));
+                setUserFavoriteIds(userFavoriteIds.filter(id => id !== recipeId));
+            }
+        } catch (error) {
+            console.error("Failed to toggle favorite:", error);
+            alert("An error occurred while updating favorites.");
+        }
+    };
 
 
     const handleEdit = (recipe) => {
@@ -81,6 +105,25 @@ export default function MyRecipes({ user, onLogout, onNavigate, onViewRecipe }) 
     };
 
 
+     const displayedRecipes = (() => {
+        switch (filterMode) {
+            case 'created':
+                return recipes;
+            case 'favorites':
+                return favoriteRecipes;
+            case 'all':
+            default:
+                const allRecipes = [...recipes];
+                favoriteRecipes.forEach(fav => {
+                    if (!allRecipes.find(r => r._id === fav._id)) {
+                        allRecipes.push(fav);
+                    }
+                });
+                return allRecipes;
+        }
+    })();
+
+
     if (loading) {
         return (
             <div className="app-container">
@@ -99,14 +142,14 @@ export default function MyRecipes({ user, onLogout, onNavigate, onViewRecipe }) 
 
 
 
-    return (
+return (
         <div className="app-container">
             <div className="search-header">
                 {/* Welcome Bar with Navigation */}
                 <div className="welcome-bar">
                     <div className="user-greeting">
                         <div className="user-icon">{user?.name?.charAt(0) || 'U'}</div>
-                        <span>Welcome, {user?.name?.charAt(0) || 'User'}!</span>
+                        <span>Welcome, {user?.name || 'User'}!</span>
                     </div>
                     <div style={{ display: 'flex', gap: '0.5rem' }}>
                         <button className="logout-button" onClick={() => onNavigate('main')}>
@@ -118,42 +161,79 @@ export default function MyRecipes({ user, onLogout, onNavigate, onViewRecipe }) 
                     </div>
                 </div>
 
-
-            
                 <div className="search-container">
                     <h1 className="app-title">My Recipes</h1>
                     <p className="app-subtitle">Your personal collection of recipes</p>
                 </div>
-            </div>
 
+                {/* Filter Tabs */}
+                <div className="recipe-filter-tabs">
+                    <button 
+                        className={`filter-tab ${filterMode === 'all' ? 'active' : ''}`}
+                        onClick={() => setFilterMode('all')}
+                    >
+                        All ({recipes.length + favoriteRecipes.filter(f => !recipes.find(r => r._id === f._id)).length})
+                    </button>
+                    <button 
+                        className={`filter-tab ${filterMode === 'created' ? 'active' : ''}`}
+                        onClick={() => setFilterMode('created')}
+                    >
+                        Created ({recipes.length})
+                    </button>
+                    <button 
+                        className={`filter-tab ${filterMode === 'favorites' ? 'active' : ''}`}
+                        onClick={() => setFilterMode('favorites')}
+                    >
+                        Favorites ({favoriteRecipes.length})
+                    </button>
+                </div>
+            </div>
 
             {/*Recipe grid or no results message*/}
             <div className="recipe-container">
-                {recipes.length > 0 ? (
-                    recipes.map(recipe => (
-                        <RecipeCard key={recipe._id} recipe={recipe} onRate={handleRateRecipe} onShare={handleShareRecipe} onView={onViewRecipe}>
-                            <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
-                                <button 
-                                    className="edit-button"
-                                    onClick={() => handleEdit(recipe)}
-                                >
-                                     Edit
-                                </button>
-                                <button 
-                                    className="delete-button"
-                                    onClick={() => handleDelete(recipe._id)}
-                                >
-                                     Delete
-                                </button>
-                            </div>
-                        </RecipeCard>
-                    ))
+                {displayedRecipes.length > 0 ? (
+                    displayedRecipes.map(recipe => {
+                        const isOwnRecipe = recipes.find(r => r._id === recipe._id);
+                        
+                        return (
+                            <RecipeCard 
+                                key={recipe._id} 
+                                recipe={recipe} 
+                                onRate={handleRateRecipe} 
+                                onShare={handleShareRecipe} 
+                                onView={onViewRecipe}
+                                onFavorite={handleFavorite}
+                                userFavorites={userFavoriteIds}
+                            >
+                                {isOwnRecipe && (
+                                    <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
+                                        <button 
+                                            className="edit-button"
+                                            onClick={() => handleEdit(recipe)}
+                                        >
+                                            ✏️ Edit
+                                        </button>
+                                        <button 
+                                            className="delete-button"
+                                            onClick={() => handleDelete(recipe._id)}
+                                        >
+                                            🗑️ Delete
+                                        </button>
+                                    </div>
+                                )}
+                            </RecipeCard>
+                        );
+                    })
                 ) : (
                     <div className="no-results">
                         <div className="no-results-content">
-                            <h3 className="no-results-title">No Recipes Yet</h3>
+                            <h3 className="no-results-title">
+                                {filterMode === 'favorites' ? 'No Favorite Recipes' : 'No Recipes Yet'}
+                            </h3>
                             <p className="no-results-text">
-                                You haven't created any recipes.
+                                {filterMode === 'favorites' 
+                                    ? "You haven't favorited any recipes yet. Browse all recipes to find some you love!"
+                                    : "You haven't created any recipes."}
                             </p>
                             <button 
                                 className="clear-filters-button"
@@ -166,7 +246,6 @@ export default function MyRecipes({ user, onLogout, onNavigate, onViewRecipe }) 
                 )}
             </div>
 
-
             {/* edit recipe area */}
             {editingRecipe && (
                 <EditRecipeForm
@@ -177,13 +256,12 @@ export default function MyRecipes({ user, onLogout, onNavigate, onViewRecipe }) 
             )}
 
             {sharingRecipe && (
-        <ShareRecipeModal
-          recipe={sharingRecipe}
-          onClose={handleCloseShareModal}
-          onShare={handleShareSubmit}
-        />
-      )}
-
+                <ShareRecipeModal
+                    recipe={sharingRecipe}
+                    onClose={handleCloseShareModal}
+                    onShare={handleShareSubmit}
+                />
+            )}
         </div>
     );
 }
