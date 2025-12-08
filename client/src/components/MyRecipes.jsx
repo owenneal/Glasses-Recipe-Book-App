@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { getAllMyRecipes, deleteRecipe, rateRecipe } from '../services/api';
+import { getAllMyRecipes, deleteRecipe, rateRecipe, shareRecipe } from '../services/api';
 import RecipeCard from './RecipeCard';
 import EditRecipeForm from './EditRecipeForm';
+import ShareRecipeModal from './ShareRecipeModal';
 import '../styles.css';
 
 export default function MyRecipes({ user, onLogout, onNavigate }) {
@@ -9,6 +10,19 @@ export default function MyRecipes({ user, onLogout, onNavigate }) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [editingRecipe, setEditingRecipe] = useState(null);
+    const [sharingRecipe, setSharingRecipe] = useState(null);
+
+    const handleShareRecipe = (recipe) => {
+        setSharingRecipe(recipe);
+    };
+
+    const handleShareSubmit = async (recipeId, email) => {
+        await shareRecipe(recipeId, email);
+    };
+
+    const handleCloseShareModal = () => {
+        setSharingRecipe(null);
+    };
 
     useEffect(() => {
         const fetchRecipes = async () => {
@@ -117,7 +131,7 @@ export default function MyRecipes({ user, onLogout, onNavigate }) {
             <div className="recipe-container">
                 {recipes.length > 0 ? (
                     recipes.map(recipe => (
-                        <RecipeCard key={recipe._id} recipe={recipe} onRate={handleRateRecipe} >
+                        <RecipeCard key={recipe._id} recipe={recipe} onRate={handleRateRecipe} onShare={handleShareRecipe}>
                             <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
                                 <button 
                                     className="edit-button"

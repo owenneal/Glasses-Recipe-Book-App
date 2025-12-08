@@ -1,4 +1,5 @@
-const { Recipe } = require('../models');
+const { Recipe } = require('../models/models');
+const { sendRecipeEmail } = require('../utils/email');
 
 // creating a recipe in the database
 // needs: title, ingredients, instructions, public
@@ -132,6 +133,50 @@ async function rateRecipe(req, res) {
     }
 }
 
+
+async function shareRecipe(req, res) {
+    try {
+        const { recipientEmail } = req.body;
+        const recipeId = req.params.id;
+        const senderName = req.user?.email || 'A user';
+
+        if (!recipientEmail) {
+            return res.status(400).json({ message: 'Recipient email is required.' });
+        }
+
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(recipientEmail)) {
+            return res.status(400).json({ message: 'Invalid email format.' });
+        }
+
+        const recipe = await Recipe.findById(recipeId).populate('author', 'name email');
+        if (!recipe) {
+            return res.status(404).json({ message: 'Recipe not found.' });
+        }
+
+        // Only allow sharing public recipes or user's own recipes
+        if (!recipe.public && recipe.author._id.toString() !== req.user.id) {
+            return res.status(403).json({ message: 'You can only share public recipes or your own recipes.' });
+        }
+
+        await sendRecipeEmail(recipe, recipientEmail, senderName);
+
+        res.status(200).json({ message: 'Recipe shared successfully!' });
+    } catch (error) {
+        console.error('Error sharing recipe:', error);
+        if (error.message.includes('Email domain not allowed')) {
+            return res.status(400).json({ message: error.message });
+        }
+        if (error.message.includes('Email service not configured')) {
+            return res.status(503).json({ message: 'Email service is not configured. Please contact the administrator.' });
+        }
+        res.status(500).json({ message: 'Failed to share recipe. Please try again.' });
+    }
+}
+
+
+
 module.exports = {
     createRecipe,
     getRecipeById,
@@ -140,4 +185,5 @@ module.exports = {
     deleteRecipe,
     searchRecipes,
     rateRecipe,
+    shareRecipe
 };

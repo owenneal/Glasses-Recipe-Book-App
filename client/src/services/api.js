@@ -102,6 +102,18 @@ export const rateRecipe = async (id, rating) => {
     }
 };
 
+
+
+export const shareRecipe = async (id, recipientEmail) => {
+    try {
+        const response = await api.post(`/recipes/${id}/share`, { recipientEmail });
+        return response.data;
+    } catch (error) {
+        console.error('Error sharing recipe:', error);
+        throw error;
+    }
+};
+
 export default api;
 
 

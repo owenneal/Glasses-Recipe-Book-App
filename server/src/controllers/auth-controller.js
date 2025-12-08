@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const { User } = require('../models');
+const { User } = require('../models/models');
 const { signToken } = require('../utils/jwt');
 
 const SALT_ROUNDS = 10;

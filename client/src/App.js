@@ -1,9 +1,6 @@
 // main app component
 // page structure and routing would go here
 // should probably just be UI
-
-
-
 import React, { useState } from 'react';
 import Main from './components/Main';
 import Landing from './components/Landing';
