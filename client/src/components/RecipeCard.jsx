@@ -68,6 +68,7 @@ export default function RecipeCard({ recipe, children, onRate, onShare, onView, 
 
   return (
       <div className="recipe-card">
+        {recipe.imageUrl && <img src={recipe.imageUrl} alt={recipe.title} className="recipe-card-image" />}
     <div className="recipe-header">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <h2 className="recipe-title">{recipe.title}</h2>

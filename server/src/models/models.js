@@ -45,6 +45,10 @@ const recipeSchema = new mongoose.Schema({
         default: [],
         required: true
     },
+    imageUrl: {
+        type: String,
+        default: ''
+    },
     category: {
         type: String,
         default: 'Uncategorized'

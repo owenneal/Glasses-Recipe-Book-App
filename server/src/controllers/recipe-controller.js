@@ -1,5 +1,33 @@
 const { Recipe } = require('../models/models');
 const { sendRecipeEmail } = require('../utils/email');
+const axios = require('axios');
+
+
+
+
+const fetchRecipeImage = async (query) => {
+    if (!process.env.UNSPLASH_ACCESS_KEY) {
+        console.log('UNSPLASH_ACCESS_KEY not set. Skipping image fetch.');
+        return null;
+    }
+    try {
+        const response = await axios.get('https://api.unsplash.com/search/photos', {
+            params: {
+                query: `${query} food`,
+                per_page: 1,
+                orientation: 'landscape'
+            },
+            headers: {
+                Authorization: `Client-ID ${process.env.UNSPLASH_ACCESS_KEY}`
+            }
+        });
+        // Return the URL for a smaller, web-friendly version of the image
+        return response.data.results[0]?.urls?.regular || null;
+    } catch (error) {
+        console.error('Error fetching image from Unsplash:', error.message);
+        return null;
+    }
+};
 
 // creating a recipe in the database
 // needs: title, ingredients, instructions, public
@@ -7,7 +35,8 @@ async function createRecipe(req, res) {
     try {
         const { title, ingredients, instructions, public: isPublic, category } = req.body;
         const author = req.user ? req.user.id : null;
-        const recipe = await Recipe.create({ title, ingredients, instructions, public: isPublic, category, author });
+        const imageUrl = await fetchRecipeImage(title);
+        const recipe = await Recipe.create({ title, ingredients, instructions, public: isPublic, category, author, imageUrl });
         res.status(201).json(recipe);
     } catch (error) {
         console.error('Error creating recipe:', error);
@@ -22,6 +51,11 @@ async function getRecipeById(req, res) {
         if (!recipe) {
             return res.status(404).json({ message: 'Recipe not found.' });
         }
+        fetchRecipeImage(recipe.title).then(imageUrl => {
+            if (imageUrl) {
+                Recipe.findByIdAndUpdate(recipe._id, { imageUrl }, { new: true }).exec();
+            }
+        });
         res.status(200).json(recipe);
     } catch (error) {
         console.error('Error fetching recipe:', error);

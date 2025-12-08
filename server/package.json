@@ -10,23 +10,28 @@
     "test:watch": "npx jest --watch"
   },
   "dependencies": {
-    "express": "^5.1.0",
-    "mongoose": "^8.18.2",
-    "dotenv": "^17.2.2",
-    "cors": "^2.8.5",
-    "body-parser": "^2.2.0",
+    "axios": "^1.13.2",
     "bcrypt": "^6.0.0",
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.18.2",
     "nodemailer": "^6.9.8"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10",
-    "jest": "30.0.0"
+    "jest": "30.0.0",
+    "nodemon": "^3.1.10"
   },
   "jest": {
     "testEnvironment": "node",
-    "coveragePathIgnorePatterns": ["/node_modules/"],
-    "testMatch": ["**/src/tests/**/*.js"]
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "testMatch": [
+      "**/src/tests/**/*.js"
+    ]
   },
   "author": "",
   "license": "ISC"
