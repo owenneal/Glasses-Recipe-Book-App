@@ -5,6 +5,7 @@ import api, { rateRecipe, shareRecipe, toggleFavorite, checkFavoriteStatus } fro
 import RecipeCard from "./RecipeCard";
 import ShareRecipeModal from "./ShareRecipeModal";
 import BackToTopButton from "./BackToTopButton";
+
 export default function Main({ user, onLogout, onNavigate, onViewRecipe }) {
   const [recipes, setRecipes] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -12,7 +13,6 @@ export default function Main({ user, onLogout, onNavigate, onViewRecipe }) {
   const [showForm, setShowForm] = useState(false);
   const [sharingRecipe, setSharingRecipe] = useState(null);
   const [userFavorites, setUserFavorites] = useState([]);
-
   // Load from backend instead of mockdata.js
   useEffect(() => {
     api.get('/recipes/public')
@@ -37,6 +37,7 @@ export default function Main({ user, onLogout, onNavigate, onViewRecipe }) {
   // Add new recipe to state
   const addRecipe = (newRecipe) => {
     setRecipes((prev) => [...prev, newRecipe]);
+    setShowForm(false);
   };
 
 
@@ -145,7 +146,7 @@ export default function Main({ user, onLogout, onNavigate, onViewRecipe }) {
         </div>
         
         <div className="search-container">
-          <h1 className="app-title">Recipe Collection</h1>
+          <h1 className="app-title">ChefShare</h1>
           <p className="app-subtitle">Discover and explore delicious recipes</p>
 
           {/* Search Bar */}
@@ -233,7 +234,6 @@ export default function Main({ user, onLogout, onNavigate, onViewRecipe }) {
           ))
         )}
       </div>
-
        {sharingRecipe && (
         <ShareRecipeModal
           recipe={sharingRecipe}
