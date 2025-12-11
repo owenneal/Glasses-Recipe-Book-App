@@ -29,7 +29,7 @@ async function register(req, res) {
         const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
         const newUser = await User.create({ name, email, password: hashedPassword });
         const token = signToken({ id: newUser._id, email: newUser.email });
-        return res.status(201).json({ user: { id: newUser._id, email: newUser.email }, token });
+        return res.status(201).json({ user: { id: newUser._id, email: newUser.email, name: newUser.name }, token });
 
     } catch (error) {
         console.error('Error during registration:', error);
@@ -57,7 +57,7 @@ async function login(req, res) {
         }
 
         const token = signToken({ id: user._id, email: user.email });
-        return res.status(200).json({ user: { id: user._id, email: user.email }, token });
+        return res.status(200).json({ user: { id: user._id, email: user.email, name: user.name }, token });
 
     } catch (error) {
         console.error('Error during login:', error);

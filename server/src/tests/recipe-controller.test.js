@@ -1,7 +1,7 @@
 const { createRecipe, getRecipeById, getPublicRecipes, rateRecipe } = require('../controllers/recipe-controller');
-const { Recipe } = require('../model/models');
+const { Recipe } = require('../models/models');
 
-jest.mock('../model/models');
+jest.mock('../models/models');
 
 
 describe('Recipe Controller', () => {
@@ -26,18 +26,20 @@ describe('Recipe Controller', () => {
         title: 'Test Recipe',
         ingredients: ['ingredient1', 'ingredient2'],
         instructions: ['step1', 'step2'],
-        public: true
+        public: true,
+        category: 'Uncategorized'
       };
       mockReq.body = recipeData;
 
-      const mockRecipe = { _id: 'recipe123', ...recipeData, author: 'user123' };
+      const mockRecipe = { _id: 'recipe123', ...recipeData, author: 'user123', imageUrl: null };
       Recipe.create = jest.fn().mockResolvedValue(mockRecipe);
 
       await createRecipe(mockReq, mockRes);
 
       expect(Recipe.create).toHaveBeenCalledWith({
         ...recipeData,
-        author: 'user123'
+        author: 'user123',
+        imageUrl: null
       });
       expect(mockRes.status).toHaveBeenCalledWith(201);
       expect(mockRes.json).toHaveBeenCalledWith(mockRecipe);
