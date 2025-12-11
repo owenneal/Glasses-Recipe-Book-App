@@ -8,6 +8,7 @@ export default function RecipeInput({ onAddRecipe }) {
   const [ingredients, setIngredients] = useState("");
   const [steps, setSteps] = useState("");
   const [category, setCategory] = useState("Uncategorized");
+  const [isPublic, setIsPublic] = useState(true);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,7 +17,7 @@ export default function RecipeInput({ onAddRecipe }) {
       title,
       ingredients: ingredients.split(",").map((ing) => ing.trim()),
       instructions: steps.split(".").map((step) => step.trim()).filter(Boolean),
-      public: true,
+      public: isPublic,
       category: category,
 
     };
@@ -28,6 +29,7 @@ export default function RecipeInput({ onAddRecipe }) {
       setIngredients("");
       setSteps("");
       setCategory("Uncategorized");
+      setIsPublic(true);
 
     } catch (err) {
       console.error("Error:", err);
@@ -88,6 +90,21 @@ export default function RecipeInput({ onAddRecipe }) {
           onChange={(e) => setSteps(e.target.value)}
           required
         />
+      </div>
+
+      <div className="form-group">
+        <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+          <input
+            type="checkbox"
+            checked={isPublic}
+            onChange={(e) => setIsPublic(e.target.checked)}
+            style={{ width: 'auto', margin: 0 }}
+          />
+          <span>Make this recipe public</span>
+        </label>
+        <small style={{ marginTop: '0.25rem', display: 'block' }}>
+          Public recipes can be viewed and rated by other users
+        </small>
       </div>
       
       <button type="submit">Save Recipe</button>
